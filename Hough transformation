@@ -1,0 +1,34 @@
+
+import numpy as np
+import cv2
+import matplotlib.pyplot as plt
+
+# Read image
+img = cv2.imread("C:\\Users\\AKSHAYA\\OneDrive\\Pictures\\Screenshots\\Screenshot 2025-04-30 150229.png", cv2.IMREAD_COLOR)  # 'd1.png' is the filename
+
+# Convert the image to grayscale
+gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+# Find the edges in the image using Canny detector
+edges = cv2.Canny(gray, 50, 200)
+
+# Detect points that form a line using the Probabilistic Hough Line Transform
+lines = cv2.HoughLinesP(edges, 1, np.pi / 180, 68, minLineLength=15, maxLineGap=20)
+
+# Draw lines on the image
+for line in lines:
+    x1, y1, x2, y2 = line[0]
+    cv2.line(img, (x1, y1), (x2, y2), (255, 154, 164), 3)
+
+# Convert the BGR image to RGB for displaying with matplotlib
+img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
+# Create a figure to display images side by side
+plt.figure(figsize=(15, 5))
+# Hough Transformed image
+plt.subplot(1, 3, 3)
+plt.title('Hough Transformed Image')
+plt.imshow(img_rgb)
+plt.axis('off')
+
+plt.show()
