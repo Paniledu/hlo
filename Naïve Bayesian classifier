@@ -1,0 +1,36 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.datasets import load_digits
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import classification_report, accuracy_score
+
+# Load the digits dataset
+data = load_digits()
+X = data.data
+Y = data.target
+
+# Split the data
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+
+# Train the model
+model = GaussianNB()
+model.fit(X_train, Y_train)
+
+# Predict
+Y_pred = model.predict(X_test)
+
+# Print results
+print("Classification Report:\n", classification_report(Y_test, Y_pred))
+print("Accuracy:", accuracy_score(Y_test, Y_pred))
+
+# Show some test images with predictions
+plt.figure(figsize=(10, 2))
+for i in range(5):
+    plt.subplot(1, 5, i + 1)
+    plt.imshow(X_test[i].reshape(8, 8), cmap='gray')
+    plt.title(f"True: {Y_test[i]}\nPred: {Y_pred[i]}")
+    plt.axis("off")
+
+plt.tight_layout()
+plt.show()
