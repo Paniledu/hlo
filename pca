@@ -1,0 +1,26 @@
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.decomposition import PCA
+
+# Load the grayscale image
+image = cv2.imread("C:\\Users\\AKSHAYA\\OneDrive\\Pictures\\Screenshots\\Screenshot 2025-04-30 150229.png", cv2.IMREAD_GRAYSCALE)
+
+# Normalize image
+image = image / 255.0
+
+# Apply PCA on image rows
+pca = PCA(n_components=40)
+transformed = pca.fit_transform(image)
+reconstructed = pca.inverse_transform(transformed)
+
+# Display the original and reconstructed images
+fig, axes = plt.subplots(1, 2, figsize=(10, 5))
+axes[0].imshow(image, cmap='gray')
+axes[0].set_title("Original Image")
+axes[0].axis("off")
+axes[1].imshow(reconstructed, cmap='gray')
+axes[1].set_title("Reconstructed Image (PCA=40)")
+axes[1].axis("off")
+plt.tight_layout()
+plt.show()
